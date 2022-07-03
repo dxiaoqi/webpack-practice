@@ -1,8 +1,11 @@
 {
   "compilerOptions": {
-    "target":"ES2015",
-    "module":"commonjs",
+    "outDir": "./dist",
+    "target":"es5",
+    "module":"es6",
     "lib": ["DOM"],
-    "jsx": "react"
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node"
   }
 }
