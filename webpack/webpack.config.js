@@ -15,17 +15,19 @@ const setMPA = () => {
   });
   entryFiles.forEach(filePath => {
     // 之匹配一级目录
-    const match = filePath.match(/src\/pages\/([^/].*)\.ts/);
+    const match = filePath.match(/pages\/([a-z].*?)\//);
     const pageName = match && match[1];
-    entry[pageName] = filePath;
-    htmlWebpackPlugins.push(
-      new HtmlWebpackPlugin({
-        template: path.join(__dirname, `../src/index.html`),
-        filename: `${pageName}.html`,
-        chunks: ['vendor', 'common', pageName],
-        inject: true,
-      })
-    );
+    if (pageName) {
+      entry[pageName] = filePath;
+      htmlWebpackPlugins.push(
+        new HtmlWebpackPlugin({
+          template: path.join(__dirname, `../src/index.html`),
+          filename: `${pageName}/index.html`,
+          chunks: ['vendor', 'common', pageName],
+          inject: true,
+        })
+      );
+    }
   }
   );
   return {
@@ -38,7 +40,7 @@ module.exports = {
   entry: mpa.entry, //'./src/dom.tsx',
   output: {
     path: path.resolve(__dirname,'../', 'dist'),
-    filename: '[name].js'
+    filename: '[name]/index.js'
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"],
@@ -60,6 +62,6 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    // new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(),
   ].concat(mpa.plugins)
 }
